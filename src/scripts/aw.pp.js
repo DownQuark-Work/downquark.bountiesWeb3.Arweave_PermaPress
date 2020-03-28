@@ -46,12 +46,25 @@
       { pageTimestamp += '0' }
     }
 
+    document.querySelector('iframe').setAttribute('src',pageUrl)
+
     document.querySelector('.subhead').innerText = new Date(parseInt(pageTimestamp,10))
+    document.querySelector('.head.noshow > .headline').innerText = pageTitle
+    document.querySelector('.head.noshow > p > .headline > a').setAttribute('href',pageUrl)
+    document.querySelector('.head.noshow > p > .headline > a').setAttribute('target','_blank')
+    document.querySelector('.head.noshow > p > .headline > a').innerText = pageTitle
+    
+
+    document.querySelectorAll('.noshow').forEach(itm => itm.classList.toggle('noshow'))
+    document.getElementById('loading').classList.toggle('noshow')
+
+    document.querySelector('.collumn').innerHTML = document.querySelector('.collumn').innerHTML + pageBodyDataRender
+
     console.log('pageTimestamp',pageTimestamp)
     console.log('pageUrlKey',pageUrlKey,pageUrl)
     console.log('pageTxnId',pageTxnId,pageTxnObj,pageTitle,pageTimestamp)
     console.log('contentObj',contentObj,hashKey)
-    console.log('pageData',pageBodyDataRender)
+    // console.log('pageData',pageBodyDataRender)
   }
 
   const loadNodes = (obj) => // START loadingData[0]
