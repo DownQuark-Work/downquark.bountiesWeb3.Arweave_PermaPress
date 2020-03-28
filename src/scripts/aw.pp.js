@@ -32,12 +32,26 @@
           pageTxnId = Object.keys(contentObj.txn)[0],
           pageTxnObj = contentObj.txn[pageTxnId],
           pageTitle = pageTxnObj.tags['page:title'] || '',
-          pageTimestamp = pageTxnObj.tags['page:timestamp'] || ''
+          pageData = pageTxnObj.data,
+          pageDataContentRegex = new RegExp(/(<body[^>]*>)((.|\s)*)(<\/body)/gmi)
+
+    let pageTimestamp = pageTxnObj.tags['page:timestamp'] || '',
+        pageBodyData = pageData.match(pageDataContentRegex),
+        pageBodyDataRender = pageBodyData[0].replace(/<(?!img|\/img|p|\/p).*?>/gim,'')
 
 
+    
+    if(pageTimestamp.length){
+      while(pageTimestamp.length < 13)
+      { pageTimestamp += '0' }
+    }
+
+    document.querySelector('.subhead').innerText = new Date(parseInt(pageTimestamp,10))
+    console.log('pageTimestamp',pageTimestamp)
     console.log('pageUrlKey',pageUrlKey,pageUrl)
     console.log('pageTxnId',pageTxnId,pageTxnObj,pageTitle,pageTimestamp)
     console.log('contentObj',contentObj,hashKey)
+    console.log('pageData',pageBodyDataRender)
   }
 
   const loadNodes = (obj) => // START loadingData[0]
